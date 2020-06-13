@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neobissurvey/screens/home.dart';
+import 'package:neobissurvey/screens/root_screen.dart';
 import 'package:neobissurvey/theme/main.dart';
 
 void main() {
@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Neobis Survey',
+      title: 'NeobisSurvey',
       theme: defaultTheme,
-      home: HomeScreen(),
+      home: RootScreen(),
     );
   }
 }
