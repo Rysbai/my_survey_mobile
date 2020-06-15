@@ -24,8 +24,7 @@ class Question {
 
 class Option {
   String id;
-  String questionId;
   String payload;
 
-  Option({this.id, this.questionId, this.payload});
+  Option({this.id, this.payload});
 }

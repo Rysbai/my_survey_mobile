@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neobissurvey/constants/auth_statuses.dart';
+import 'package:neobissurvey/constants/shared_presences_keys.dart';
 import 'package:neobissurvey/screens/home.dart';
 import 'package:neobissurvey/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +34,7 @@ class _RootScreenState extends State<RootScreen> {
     super.initState();
 
     SharedPreferences.getInstance().then((pref) {
-      final String token = pref.getString('authToken') ?? '';
+      final String token = pref.getString(USER_TOKEN) ?? '';
 
       if (token.length == 0) {
         setState(() {

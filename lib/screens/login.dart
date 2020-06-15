@@ -4,7 +4,6 @@ import 'package:neobissurvey/api/user.dart';
 import 'package:neobissurvey/constants/auth_statuses.dart';
 import 'package:neobissurvey/entities/user.dart';
 import 'package:neobissurvey/factories/user.dart';
-import 'package:neobissurvey/screens/home.dart';
 
 class AuthScreen extends StatefulWidget {
   AuthScreen({Key key, this.loginSuccessCallback}) : super(key: key);
@@ -20,25 +19,42 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'NeobisSurvey',
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
             Form(
               key: _textInputKey,
               child: TextFormField(
+                enabled: authState != AUTH_IN_PROGRESS,
                 decoration: InputDecoration(
-                    icon: Icon(Icons.person),
-                    hintText: 'Enter your name',
-                    labelText: 'Name *'),
+                  icon: Icon(Icons.person),
+                  hintText: 'Enter your name to continue',
+                  helperText: '*Name will be hidden in anonymous surveys',
+                ),
                 onSaved: (String name) {
                   final User user =
                       UserEntityFactory.create(id: '', name: name);
                   UserApi.auth(user)
                       .then((value) => widget.loginSuccessCallback())
                       .catchError((exception) => {});
+                },
+                validator: (String value) {
+                  return value.length < 4
+                      ? 'Name length should be more then 4'
+                      : null;
                 },
               ),
             ),

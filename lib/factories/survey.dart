@@ -3,6 +3,16 @@ import 'dart:convert';
 import 'package:neobissurvey/entities/survey.dart';
 
 class SurveyEntityFactory {
+  static List<Survey> surveysFromMapsList(List<dynamic> data) {
+    List<Survey> surveys = <Survey>[];
+
+    data.forEach((element) {
+      surveys.add(SurveyEntityFactory.fromMap(element));
+    });
+
+    return surveys;
+  }
+
   static Survey fromJson(String jsonString) {
     final jsonData = json.decode(jsonString);
     return SurveyEntityFactory.fromMap(jsonData);
@@ -34,7 +44,7 @@ class SurveyEntityFactory {
 }
 
 class QuestionEntityFactory {
-  static List<Question> questionsFromMapsList(List<Map<String, dynamic>> data) {
+  static List<Question> questionsFromMapsList(List<dynamic> data) {
     List<Question> questions = <Question>[];
 
     data.forEach((element) {
@@ -70,7 +80,7 @@ class QuestionEntityFactory {
 }
 
 class OptionEntityFactory {
-  static List<Option> optionsFromMapsList(List<Map<String, dynamic>> map) {
+  static List<Option> optionsFromMapsList(List<dynamic> map) {
     List<Option> options = <Option>[];
 
     map.forEach((element) {
@@ -87,11 +97,10 @@ class OptionEntityFactory {
   }
 
   static Option fromMap(Map<String, dynamic> map) {
-    return OptionEntityFactory.create(
-        id: map["id"], questionId: map["questionId"], payload: map["payload"]);
+    return OptionEntityFactory.create(id: map["id"], payload: map["payload"]);
   }
 
-  static Option create({String id, String questionId, String payload}) {
-    return Option(id: id, questionId: questionId, payload: payload);
+  static Option create({String id, String payload}) {
+    return Option(id: id, payload: payload);
   }
 }
