@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:neobissurvey/entities/survey.dart';
+import 'package:neobissurvey/screens/fill_survey.dart';
 
 class SurveyCard extends StatefulWidget {
   Survey survey;
-  SurveyCard({Key key, this.survey}) : super(key: key);
+  bool justInfo = false;
+  SurveyCard({Key key, this.survey, this.justInfo = false}) : super(key: key);
 
   @override
   _SurveyCardState createState() => _SurveyCardState();
@@ -55,32 +57,7 @@ class _SurveyCardState extends State<SurveyCard> {
                     ),
                   ),
                   Row(
-                    children: <Widget>[
-                      FlatButton(
-                        padding: EdgeInsets.all(0),
-                        child: Text(
-                          showAllDescription ? 'Less' : 'More',
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            showAllDescription = !showAllDescription;
-                          });
-                        },
-                      ),
-                      SizedBox(width: 8.0),
-                      RaisedButton(
-                        onPressed: () {
-                          print('Pass button pressed');
-                        },
-                        color: Theme.of(context).primaryColor,
-                        child: Text(
-                          'Fill',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    ],
+                    children: getActions(),
                   )
                 ],
               ),
@@ -89,5 +66,55 @@ class _SurveyCardState extends State<SurveyCard> {
         ),
       ),
     );
+  }
+
+  List<Widget> getActions() {
+    if (widget.justInfo) {
+      return <Widget>[
+        FlatButton(
+          padding: EdgeInsets.all(0),
+          child: Text(
+            showAllDescription ? 'Less' : 'More',
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
+          onPressed: () {
+            setState(() {
+              showAllDescription = !showAllDescription;
+            });
+          },
+        ),
+      ];
+    } else {
+      return <Widget>[
+        FlatButton(
+          padding: EdgeInsets.all(0),
+          child: Text(
+            showAllDescription ? 'Less' : 'More',
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
+          onPressed: () {
+            setState(() {
+              showAllDescription = !showAllDescription;
+            });
+          },
+        ),
+        SizedBox(width: 8.0),
+        RaisedButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => FillSurveyScreen(
+                          survey: widget.survey,
+                        )));
+          },
+          color: Theme.of(context).primaryColor,
+          child: Text(
+            'Fill',
+            style: TextStyle(color: Colors.white),
+          ),
+        )
+      ];
+    }
   }
 }

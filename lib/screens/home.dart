@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:neobissurvey/api/survey.dart';
 import 'package:neobissurvey/entities/survey.dart';
+import 'package:neobissurvey/widgets/search_survey.dart';
 import 'package:neobissurvey/widgets/survey_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,9 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           IconButton(
               onPressed: () {
-                print('Search icon pressed!');
+                print('Quit icon pressed!');
               },
-              icon: Icon(Icons.scanner))
+              icon: Icon(FontAwesomeIcons.signOutAlt))
         ],
       ),
       body: ListView(children: <Widget>[
@@ -35,81 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 270.0,
-                    child: Form(
-                      key: searchFormKey,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            hintText: 'Enter survey code to find'),
-                        onSaved: (String code) {
-                          SurveyApi.getSurveyByCode(code)
-                              .then((survey) => {
-                                    setState(() {
-                                      searchSurveyStatus =
-                                          SearchSurveyStatus.success;
-                                      foundSurvey = survey;
-                                    })
-                                  })
-                              .catchError((error) {
-                            setState(() {
-                              foundSurvey = null;
-                              searchSurveyStatus = SearchSurveyStatus.fail;
-                            });
-                          });
-                        },
-                        validator: (String value) {
-                          return value.length < 4
-                              ? 'Code length should be more then 6'
-                              : null;
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Ink(
-                    decoration: ShapeDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: CircleBorder(),
-                        shadows: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0.0, 2.2),
-                              blurRadius: 6.0)
-                        ]),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          searchSurveyStatus = SearchSurveyStatus.inProgress;
-                        });
-
-                        final textInput = searchFormKey.currentState;
-                        if (textInput.validate()) {
-                          textInput.save();
-                        } else {
-                          setState(() {
-                            searchSurveyStatus =
-                                SearchSurveyStatus.notDetermined;
-                          });
-                        }
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              getSearchSurveyContent(),
+              Container(child: SearchSurveyCard()),
               SizedBox(
                 height: 20.0,
               ),
@@ -137,8 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         List<Widget> widgets = <Widget>[];
-                        snapshot.data.forEach((survey) =>
-                            widgets.add(SurveyCard(survey: survey)));
+                        snapshot.data
+                            .forEach((survey) => widgets.add(SurveyCard(
+                                  survey: survey,
+                                  justInfo: false,
+                                )));
                         return Column(children: widgets);
                       }
                       return Center(child: CircularProgressIndicator());
