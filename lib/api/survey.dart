@@ -67,3 +67,29 @@ class SurveyApi {
     return SurveyEntityFactory.surveysFromMapsList(response.data['surveys']);
   }
 }
+
+class AnswerAPi {
+  static Future<String> saveQuestionAnswer(
+      String questionId, List<String> optionIds) async {
+    final String query = r'''
+      mutation SaveUserAnswer ($questionId: ID!, $options: [ID]) {
+        saveUserAnswer (questionId: $questionId, options: $options) {
+          message
+        }
+      }
+    ''';
+
+    final QueryOptions options = QueryOptions(
+        documentNode: gql(query),
+        variables: <String, dynamic>{
+          "questionId": questionId,
+          "options": optionIds
+        });
+    final response = await client.query(options);
+    if (response.hasException) {
+      throw Exception('WTF');
+    }
+
+    return 'ok';
+  }
+}
