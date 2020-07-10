@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:graphql/client.dart';
 import 'package:neobissurvey/api/base.dart';
 import 'package:neobissurvey/constants/shared_presences_keys.dart';
@@ -26,12 +28,13 @@ class UserApi {
     final QueryResult result = await client.query(queryOptions);
 
     if (result.hasException) {
-      throw Exception('WTF');
+      throw Exception(result.exception);
     }
 
     final String token = result.data['auth']['token'];
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(USER_TOKEN, token);
+    prefs.setString(USER, json.encode(result.data["auth"]["user"]));
 
     return UserEntityFactory.fromMap(result.data["auth"]["user"]);
   }

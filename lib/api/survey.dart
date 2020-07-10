@@ -44,7 +44,7 @@ class SurveyApi {
           title,
           description,
           isAnonymous,
-          isPublic,
+          isOpen,
           questions {
             id,
             payload,
@@ -60,6 +60,7 @@ class SurveyApi {
     final QueryOptions options = QueryOptions(documentNode: gql(query));
     final QueryResult response = await client.query(options);
     if (response.hasException) {
+      print(response.exception);
       throw Exception('WTF');
     }
     List<Survey> surveys =

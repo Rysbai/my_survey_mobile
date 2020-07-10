@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:neobissurvey/api/survey.dart';
 import 'package:neobissurvey/entities/survey.dart';
+
+import '../main.dart';
 
 class QuestionCard extends StatefulWidget {
   Question question;
@@ -11,6 +11,17 @@ class QuestionCard extends StatefulWidget {
 }
 
 class _QuestionCardState extends State<QuestionCard> {
+//  SocketService socketService;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+//      socketService = injector.get<SocketService>();
+//      socketService.createSocketConnection();
+    });
+  }
+
   List<String> checkedOptions = <String>[];
   @override
   Widget build(BuildContext context) {
@@ -78,7 +89,8 @@ class _QuestionCardState extends State<QuestionCard> {
         });
       }
     }
-    AnswerAPi.saveQuestionAnswer(widget.question.id, checkedOptions);
+//    AnswerAPi.saveQuestionAnswer(widget.question.id, checkedOptions);
+    socketService.updateQuestionResults(widget.question.id, checkedOptions);
   }
 }
 
