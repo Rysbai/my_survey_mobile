@@ -9,6 +9,7 @@ import 'factories/socket_dependency_injection.dart';
 
 Injector injector;
 SocketService socketService;
+
 void main() async {
   DependencyInjection().initialise(Injector.getInjector());
   injector = Injector.getInjector();

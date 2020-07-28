@@ -6,23 +6,14 @@ import '../main.dart';
 
 class QuestionCard extends StatefulWidget {
   Question question;
-  QuestionCard({Key key, this.question}) : super(key: key);
+  Function setAnswered;
+  QuestionCard({Key key, this.question, this.setAnswered}) : super(key: key);
   _QuestionCardState createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> {
-//  SocketService socketService;
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-//      socketService = injector.get<SocketService>();
-//      socketService.createSocketConnection();
-    });
-  }
-
   List<String> checkedOptions = <String>[];
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,7 +24,7 @@ class _QuestionCardState extends State<QuestionCard> {
             Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Question payload',
+                  widget.question.payload,
                   style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -67,6 +58,8 @@ class _QuestionCardState extends State<QuestionCard> {
   }
 
   void onChange(String id, bool checked) {
+    widget.setAnswered(widget.question.id);
+
     if (widget.question.allowMultipleAnswer) {
       if (checked) {
         setState(() {
@@ -121,7 +114,15 @@ class _Option extends StatelessWidget {
                   onChange(true);
                 },
               ),
-        Text(option.payload)
+        Container(
+            padding: EdgeInsets.all(0.0),
+            width: MediaQuery.of(context).size.width * 0.7,
+            alignment: Alignment.topLeft,
+            child: Column(
+              children: [
+                Text(option.payload),
+              ],
+            ))
       ],
     );
   }

@@ -53,7 +53,6 @@ class _SurveyCardState extends State<SurveyCard> {
                       widget.survey.description,
                       style: TextStyle(color: Colors.black54),
                       maxLines: showAllDescription ? null : 2,
-//                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
